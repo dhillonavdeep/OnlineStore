@@ -6,7 +6,13 @@
         <div class="card card-body">
              <form action="" method="POST">
                 {% csrf_token %}
-                {{form }}
+                {{formset.management_form}}
+                {% comment %} without this some management error occurs {% endcomment %}
+                {% for form in formset %}
+                    {{form}}
+                    <hr>
+                {% endfor %}
+                
                 <input type="submit" name="sadasd">
              </form>
         </div>
