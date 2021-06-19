@@ -1,11 +1,37 @@
 from django.shortcuts import render,redirect
 
 # Create your views here.
-
+from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.forms import fields, inlineformset_factory
+
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+
 from .models import *
-from .forms import OrderForm
+from .forms import OrderForm, CreateUserForm
+from .filters import OrderFilter
+
+def registerPage(request):
+    form=CreateUserForm()
+    
+    if request.method == 'POST':
+        print("RQST->",request.META)
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            user = form.cleaned_data.get('username')
+            messages.success(request,"Account was created for "+user)
+            return redirect('login')
+    context={'form':form}
+    return render(request,'accounts/register.html', context)
+
+def loginPage(request):
+    if request.method == "POST":
+        request.POST.get('username')
+        request.POST.get('password')
+    context={}
+    return render(request,'accounts/login.html', context)
 
 def home(request):
     orders = Order.objects.all()
@@ -36,7 +62,12 @@ def customer(request,pk_test):
     orders = customer.order_set.all()
     order_count=orders.count()
 
-    context={'customer':customer,'orders':orders,'order_count':order_count}
+    customerFilter = OrderFilter(request.GET,queryset=orders)
+    #customerFilter takes GEt data and queryset it filters
+    orders = customerFilter.qs
+    #we rebuilds orders variable
+
+    context={'customer':customer,'orders':orders,'order_count':order_count,'customerFilter':customerFilter}
     
     return render(request,'accounts/customer.html',context)
 
@@ -63,6 +94,7 @@ def updateOrder(request,pk):
     order = Order.objects.get(id=pk) # gets id from GET request
     form = OrderForm(instance=order)
     context={'form':form}
+    # it is broken because it uses form instef of formset(which our template expects)
     if request.method == 'POST':
         #print('PRINTING POST:',request.POST)
         form = OrderForm(request.POST,instance=order)
