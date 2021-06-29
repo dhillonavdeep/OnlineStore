@@ -21,17 +21,21 @@ def registerPage(request):
     form=CreateUserForm()
     
     if request.method == 'POST':
-        print("RQST->",request.META)
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
 
-            # user will be set as customer on registartion
+            # user will be set as customer(group) on registartion
             group = Group.objects.get(name='customer')
             user.groups.add(group)
 
-            messages.success(request,"Account was created for "+username)
+            Customer.objects.create(
+                user=user
+                #and it broke
+            )
+            #this message will be sent to login page to appear below fields
+            messages.success(request,"Account has been created for "+username)
             return redirect('login')
     context={'form':form}
     return render(request,'accounts/register.html', context)
@@ -63,7 +67,7 @@ def home(request):
     customers = Customer.objects.all()
 
     total_customers = customers.count()
-
+    
     total_orders = orders.count()
     delivered = orders.filter(status='Delivered').count()
     pending= orders.filter(status='Pending').count()
@@ -74,15 +78,25 @@ def home(request):
 
     return render(request,'accounts/dashboard.html',context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['customer'])
 def userPage(request):
-    context={}
-    return render(request,'accounts/dashboard.html',context)
+    orders= request.user.customer.order_set.all()
+    print(f"Genrating page with order: {orders}")
+    
+    total_orders = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending= orders.filter(status='Pending').count()
+
+    context={'orders':orders,'total_orders':total_orders,
+    'delivered':delivered,'pending':pending}
+    return render(request,'accounts/user.html',context)
 
 def contact(request):
     return HttpResponse('Contact Page')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['admins'])
+@allowed_users(allowed_roles=['admin'])
 def products(request):
     products = Product.objects.all()
 
