@@ -8,6 +8,9 @@ urlpatterns = [
     path('logout/',views.logoutUser,name='logout'),
     path('register/',views.registerPage,name='register'),
 
+    #user can change profile info here
+    path('account/', views.accountSettings, name="account"),
+
     path('user/',views.userPage,name="home"),
     path('contact',views.contact,),
     path('products',views.products,name="products"),
@@ -17,3 +20,4 @@ urlpatterns = [
     path('update_order/<str:pk>/',views.updateOrder,name="update_order"),
     path('delete_order/<str:pk>/',views.deleteOrder,name="delete_order"),
 ]
+

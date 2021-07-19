@@ -31,7 +31,7 @@ def registerPage(request):
             user.groups.add(group)
 
             Customer.objects.create(
-                user=user
+                user=user,
                 #and it broke
             )
             #this message will be sent to login page to appear below fields
@@ -91,6 +91,12 @@ def userPage(request):
     context={'orders':orders,'total_orders':total_orders,
     'delivered':delivered,'pending':pending}
     return render(request,'accounts/user.html',context)
+
+@login_required(login_url="login")
+@allowed_users(allowed_roles=["customer"])
+def accountSettings(request):
+    context = {}
+    return render(request, 'accounts/account_settings.html', context)
 
 def contact(request):
     return HttpResponse('Contact Page')
