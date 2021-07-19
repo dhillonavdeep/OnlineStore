@@ -13,6 +13,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
+      {% comment %} Only Staff can see this part {% endcomment %}
       {% if request.user.is_staff %}
       <li class="nav-item active">
         <a class="nav-link" href="{% url 'home' %}">Dashboard</a>
@@ -20,8 +21,12 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url  'products' %}">Products</a>
       </li>
+      {% comment %} If the user is not of staff category( of user category ) {% endcomment %}
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url  'account' %}">Settings</a>
+      </li>
       {% endif %}
-
     </ul>
   </div>
 

@@ -13,7 +13,7 @@ from django.contrib.auth.models import Group
 
 from .decorators import unautheticated_user,allowed_users,admin_only
 from .models import *
-from .forms import OrderForm, CreateUserForm
+from .forms import OrderForm, CreateUserForm, CustomerForm
 from .filters import OrderFilter
 
 @unautheticated_user
@@ -95,7 +95,16 @@ def userPage(request):
 @login_required(login_url="login")
 @allowed_users(allowed_roles=["customer"])
 def accountSettings(request):
-    context = {}
+    user= request.user
+    form = CustomerForm(instance=user)
+
+    if request.metod == "POST":
+        form = CustomerForm(request.POST, request.FILES, instance=customer)
+        if form.is_valid():
+            form.save()
+
+
+    context = {'form':form}
     return render(request, 'accounts/account_settings.html', context)
 
 def contact(request):
