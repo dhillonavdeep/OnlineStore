@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    #because of signal functionality
+    'accounts.apps.AccountsConfig',
+
     'django_filters',
 ]
 

@@ -11,7 +11,8 @@ class Customer(models.Model):
     profile_pic= models.ImageField(default="profile.png",null=True,blank=True)
 
     date_created = models.DateTimeField(auto_now_add=True,null=True)
-    def __str__(self) -> str:
+
+    def __str__(self):
         return self.name
 
 class Tag(models.Model):

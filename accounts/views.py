@@ -26,14 +26,6 @@ def registerPage(request):
             user = form.save()
             username = form.cleaned_data.get('username')
 
-            # user will be set as customer(group) on registartion
-            group = Group.objects.get(name='customer')
-            user.groups.add(group)
-
-            Customer.objects.create(
-                user=user,
-                #and it broke
-            )
             #this message will be sent to login page to appear below fields
             messages.success(request,"Account has been created for "+username)
             return redirect('login')
@@ -95,10 +87,9 @@ def userPage(request):
 @login_required(login_url="login")
 @allowed_users(allowed_roles=["customer"])
 def accountSettings(request):
-    user= request.user
-    form = CustomerForm(instance=user)
-
-    if request.metod == "POST":
+    customer = request.user.customer
+    form = CustomerForm(instance=customer)
+    if request.method == "POST":
         form = CustomerForm(request.POST, request.FILES, instance=customer)
         if form.is_valid():
             form.save()
