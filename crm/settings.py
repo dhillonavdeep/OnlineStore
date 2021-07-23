@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import django
+
+from django.forms.widgets import EmailInput
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -131,3 +134,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
+
+
+#SMTP Config:
+# For emails obv
+# google this or something for other ones
+
+EMAIL = "django.core.mailbackend.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+# your credentials
+EMAIL_HOST_USER = "abc@gmail.com"
+EMAIl_HOST_PASSWORD = "abcdef"
