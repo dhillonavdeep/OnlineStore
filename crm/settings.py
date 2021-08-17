@@ -136,14 +136,14 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 
-#SMTP Config:
+# SMTP Config:
 # For emails obv
-# google this or something for other ones
-
+# check doc or internet for other ones
 EMAIL = "django.core.mailbackend.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-# your credentials
+
+# your credentials here
 EMAIL_HOST_USER = "abc@gmail.com"
-EMAIl_HOST_PASSWORD = "abcdef"
+EMAIL_HOST_PASSWORD = "abcdef"
