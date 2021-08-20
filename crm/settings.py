@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import django
-
+import os
 from django.forms.widgets import EmailInput
-
+import django_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,6 +28,7 @@ SECRET_KEY = 'django-insecure-u&ip5w9rz5s4=y(wro0p*6sa*k=1d7=(tbm^v=c$cg3i4a$s)$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# put heroku app url here
 ALLOWED_HOSTS = []
 
 
@@ -80,13 +81,17 @@ WSGI_APPLICATION = 'crm.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# config for postgresql here
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'deafult' : {
+        'ENGINE' : 'django.db.backends.postgresql_psycopg2',
+        'NAME' : '----',
+        'USER' : '----',
+        'PASSWORD' : '----',
+        'HOST' : '----',
+        'PORT' : '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -124,18 +129,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR,'/static/')
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-import os
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
-
+django_heroku.settings(locals())
 # SMTP Config:
 # For emails obv
 # check doc or internet for other ones
