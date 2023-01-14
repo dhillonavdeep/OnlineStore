@@ -5,7 +5,7 @@ Python3
 ## How to Use
 To use this simply clone the repo
 ```shell
-git clone https://github.com/AugurCognito/OnlineStore.git
+git clone https://github.com/dhillonavdeep/OnlineStore
 ```
 After that change directory to repo
 ```shell
